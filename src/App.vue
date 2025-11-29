@@ -1,15 +1,43 @@
 <script setup>
-import { ref } from 'vue'
-import Navbar from "@/components/Navbar.vue"
-import Home from "@/components/Home.vue"
-import Foot_er from "@/components/footer.vue"
+/**
+ * App.vue - Root component
+ * Provides layout structure for all pages
+ */
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
+import AppHeader from '@/components/layout/AppHeader.vue'
+import AppFooter from '@/components/layout/AppFooter.vue'
 
+const route = useRoute()
+
+// Update page title based on route
+watch(
+  () => route.meta.title,
+  (title) => {
+    if (title) {
+      document.title = `${title} | NeuroNest`
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
-    <div class="min-h-screen flex flex-col">
-        <Navbar />
-        <RouterView/>
-        <Foot_er />
-    </div>
+  <div class="min-h-screen flex flex-col bg-gray-50">
+    <!-- Header -->
+    <AppHeader />
+
+    <!-- Main Content -->
+    <RouterView />
+
+    <!-- Footer -->
+    <AppFooter />
+  </div>
 </template>
+
+<style scoped>
+/* Ensure main content takes remaining space */
+:deep(.flex-grow) {
+  flex: 1;
+}
+</style>

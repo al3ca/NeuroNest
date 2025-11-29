@@ -9,11 +9,29 @@ export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
-    tailwindcss(),
+    tailwindcss()
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
-    },
+    }
   },
+  build: {
+    target: 'esnext',
+    minify: 'terser',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunks for better caching
+          'vue-core': ['vue', 'vue-router', 'pinia']
+        }
+      }
+    }
+  },
+  server: {
+    port: 5173,
+    open: true
+  }
 })
+
